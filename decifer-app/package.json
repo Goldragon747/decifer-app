@@ -17,8 +17,10 @@
     "react-cloud-vision-api": "^0.3.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-camera": "^1.8.0",
+    "react-native-tesseract-ocr": "^1.0.10",
     "react-native-text-detector": "0.0.6",
-    "react-navigation": "^3.0.9"
+    "react-navigation": "^3.0.9",
+    "tesseract.js": "^1.0.14"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",

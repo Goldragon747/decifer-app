@@ -10,12 +10,7 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { Camera, Permissions } from 'expo';
-import { MonoText } from '../components/StyledText';
-import RNTextDetector from "react-native-text-detector";
-// Imports the Google Cloud client library
-import vision from "react-cloud-vision-api";
-vision.init({ auth: 'bb41353e01068e6ef5c20582884d59df4505be24'})
-
+import RNTesseractOcr from 'react-native-tesseract-ocr';
 // Creates a client
 // const client = new vision.ImageAnnotatorClient();
 
@@ -38,22 +33,31 @@ export default class HomeScreen extends React.Component {
         base64: true,
         skipProcessing: true};
         try{
-           const {uri} = await this.camera.takePictureAsync(options);
-          //  const {text} = RNTextDetector.detectFromUri(uri);
-          //  console.log("text!",text)
-           // Performs label detection on the image file
-           const req = new vision.Request({
-            image: new vision.Image({
-              path: uri,
-            }),
-            features: [
-              new vision.Feature('TEXT_DETECTION', 4)
-            ]
+           const { base64 } = await this.camera.takePictureAsync(options);
+           fetch("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDYsPK5ppoOVfjqBBkACtTg88_4klTL1sg", {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              "requests":[
+                {
+                  "image":{
+                    "content": base64
+                  },
+                  "features":[
+                    {
+                      "type":"TEXT_DETECTION",
+                      "maxResults":1
+                    }
+                  ]
+                }
+              ]
+            })
+          }).then((response) => response.json()).then(function (response) {
+             console.log("RESPONSE CLIENT:",response.responses[0].textAnnotations[0].description);
           });
-          fetch(req).then(res => {
-            console.log(res)
-          })
-          console.log(req)
         } catch(e){
           console.log("err",e)
         }

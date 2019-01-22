@@ -20,7 +20,7 @@ export default class HomeScreen extends React.Component {
     const {navigate} = this.props.navigation;
       return(
         <View>
-          <Button title="Caesar" onPress={()=>{ navigate("Caesar")} } />
+          <Button style={{height:500}} title="Caesar" onPress={()=>{ navigate("CameraScreen")} } />
         </View>
       )
   }
