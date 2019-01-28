@@ -9,28 +9,44 @@ import {
   View,
 } from 'react-native';
 import TinyInput from "../components/TinyInput"
+import CusCamera from "../components/CusCamera"
 export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      cypherText:'',
+      cypherText: "",
       dictionary:{
         A:"", B:"", C:"", D:"", E:"", F:"",
         G:"", H:"", I:"", J:"", K:"", L:"",
         M:"", N:"", O:"", P:"", Q:"", R:"",
         S:"", T:"", U:"", V:"", W:"", X:"",
-        Y:"", Z:""
+        Y:"", Z:"",
+        camera:false,
       }
     };
+    this.pressDone = this.pressDone.bind(this);
     this.changeAllTexts = this.changeAllTexts.bind(this);
+    this.cameraPress = this.cameraPress.bind(this);
   }
   static navigationOptions = {
     header: null,
   };
+  cameraPress = () =>{
+    const {navigate} = this.props.navigation;
+    navigate("Camera",{back:"FrequencyAnalysis"});
+  }
+  pressDone(text){
+    this.setState({cypherText:text,camera:false})
+  }
   changeAllTexts = (labelText, newText) => {
     let dictionary = this.state.dictionary;
     dictionary[labelText] = newText;
         this.setState({dictionary});
+  }
+  componentWillMount(){
+    this.setState({cypherText:this.props.navigation.getParam('cameraText', '')},()=>{
+      console.log("cypher",this.state.cypherText)
+    });
   }
   render() {
     const styles = StyleSheet.create({
@@ -52,6 +68,15 @@ export default class HomeScreen extends React.Component {
           flexDirection:"row",
           flexWrap:"wrap",
           justifyContent:"center"
+      },
+      camera:{
+        position:"absolute",
+        top:0,
+        left:0,
+        right:0,
+        bottom:0,
+        elevation:5,
+        display:this.state.camera ? "flex" : "none"
       }
     });
     let dictionary = this.state.dictionary;
@@ -70,10 +95,13 @@ export default class HomeScreen extends React.Component {
     return(
       <View style={styles.container}>
         <Text>Frequency Analysis</Text>
+        <Button onPress={this.cameraPress} title="Use Camera" />
         <TextInput style={styles.input} onChangeText={(cypherText)=>{this.setState({cypherText})}} value={this.state.cypherText} />
-        <View style={styles.inputsContainer}>
+        <ScrollView>
+          <View style={styles.inputsContainer}>
             { inputs }
-        </View>
+          </View>
+        </ScrollView>
       </View>
     )
   }
