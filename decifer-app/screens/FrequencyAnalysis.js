@@ -14,11 +14,24 @@ export default class HomeScreen extends React.Component {
     super(props);
     this.state = {
       cypherText:'',
+      dictionary:{
+        A:"", B:"", C:"", D:"", E:"", F:"",
+        G:"", H:"", I:"", J:"", K:"", L:"",
+        M:"", N:"", O:"", P:"", Q:"", R:"",
+        S:"", T:"", U:"", V:"", W:"", X:"",
+        Y:"", Z:""
+      }
     };
+    this.changeAllTexts = this.changeAllTexts.bind(this);
   }
   static navigationOptions = {
     header: null,
   };
+  changeAllTexts = (labelText, newText) => {
+    let dictionary = this.state.dictionary;
+    dictionary[labelText] = newText;
+        this.setState({dictionary});
+  }
   render() {
     const styles = StyleSheet.create({
       container:{
@@ -41,9 +54,18 @@ export default class HomeScreen extends React.Component {
           justifyContent:"center"
       }
     });
-    let key = 0;
+    let dictionary = this.state.dictionary;
+    let keyIterator = 0;
+    console.log("rerendered",dictionary)
     let inputs = this.state.cypherText.toUpperCase().split('').map((letter) => {
-        return <TinyInput key={++key} letter={letter} />
+      let value = null;
+      for(var key in dictionary){
+        if(key === letter){
+          value = dictionary[key];
+          console.log("value",value);
+        }
+      }
+        return <TinyInput key={++keyIterator} letter={letter} value={value} onChangeText={this.changeAllTexts} />
     });
     return(
       <View style={styles.container}>

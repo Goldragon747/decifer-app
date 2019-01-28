@@ -1,9 +1,9 @@
 {
   "expoServerNgrokUrl": "https://b7-7jz.anonymous.decifer-app.exp.direct",
   "packagerNgrokUrl": "https://packager.b7-7jz.anonymous.decifer-app.exp.direct",
-  "ngrokPid": 103824,
+  "ngrokPid": 13032,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 47092
+  "packagerPid": 4820
 }
